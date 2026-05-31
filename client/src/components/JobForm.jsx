@@ -47,7 +47,7 @@ const JobForm = () => {
             placeholder="Enter company name"
           />
           <label htmlFor="Role" className="font-medium">
-            Role Name
+            Role
           </label>
           <input
           onChange={handleChange}
@@ -59,14 +59,14 @@ const JobForm = () => {
             placeholder="Enter Role name"
           />
 
-          <label htmlFor="Role" className="font-medium">
+          <label  className="font-medium">
             Status
           </label>
 
           <select name="status" value={formData.status} onChange={handleChange} className="border p-2 border-gray-500 rounded-md " id="">
             <option value="Applied">Applied</option>
             <option value="Interview">Interview</option>
-            <option value="Offered">Offered</option>
+            <option value="Offer">Offered</option>
             <option value="Accepted">Accepted</option>
             <option value="Rejected">Rejected</option>
           </select>
@@ -78,10 +78,10 @@ const JobForm = () => {
            
           </select>
 
-          <label htmlFor="Role" className="font-medium">
+          <label htmlFor="notes"  className="font-medium">
             Notes
           </label>
-          <textarea name="notes" value={formData.notes} onChange={handleChange} className="border-gray-500 focus:outline-none focus:ring-blue-600 focus:ring-1 rounded-md border"  ></textarea>
+          <textarea id="notes" name="notes" value={formData.notes} onChange={handleChange} className="border-gray-500 focus:outline-none focus:ring-blue-600 focus:ring-1 rounded-md border"  ></textarea>
         </div>
 
         <button

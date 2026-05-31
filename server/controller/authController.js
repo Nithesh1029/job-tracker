@@ -60,3 +60,30 @@ export const login =async(req ,res)=>{
         return res.status(500).json({message:error.message}); 
     }
 }
+
+
+export const logOut=async(req,res)=>{
+    try {
+        res.clearCookie('token',{
+            httpOnly:true,
+            secure:process.env.NODE_ENV==="production",
+            sameSite:"strict"
+        });
+        res.status(200).json({message:"Logged out successfully"});
+    } catch (error) {
+        return res.status(500).json({message:error.message}); 
+    }
+}
+
+
+
+export const getMe=async(req,res)=>{
+    try {
+        const userId=req.user.id;
+        const user=await User.findById(userId).select("-password");
+        return res.status(200).json({user});
+
+    } catch (error) {
+        return res.status(401).json({message:"Unauthorized"});
+    }
+}

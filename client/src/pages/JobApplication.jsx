@@ -1,10 +1,14 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useRef } from "react";
 
 const JobApplication = () => {
   const url = import.meta.env.VITE_API_URL;
 
   const [jobs, setJobs] = useState([]);
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
 
   const deleteApplication = async (id) => {
     try {
@@ -21,14 +25,26 @@ const JobApplication = () => {
   };
 
   const getJobs = async () => {
+    if (loading || !hasMore) return;
+
     try {
-      const res = await axios.get(`${url}/job/getall`, {
+      setLoading(true);
+
+      const res = await axios.get(`${url}/job/getall?page=${page}&limit=10`, {
         withCredentials: true,
       });
 
-      setJobs(res.data.jobs);
+      setJobs((prev) => [...prev, ...res.data.jobs]);
+
+      if (res.data.jobs.length < 10) {
+        setHasMore(false);
+      }
+
+      setPage((prev) => prev + 1);
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -45,10 +61,31 @@ const JobApplication = () => {
       console.error(error);
     }
   };
+  const initialFetch=useRef(false);
 
   useEffect(() => {
+    if(initialFetch.current) return
+    initialFetch.current=true;
     getJobs();
   }, []);
+  useEffect(() => {
+    const handleScroll = () => {
+      if (
+        window.innerHeight + window.scrollY >=
+          document.body.offsetHeight - 200 &&
+        !loading &&
+        hasMore
+      ) {
+        getJobs();
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [loading, hasMore]);
 
   const getStatusColor = (status) => {
     switch (status) {
@@ -79,6 +116,9 @@ const JobApplication = () => {
         </div>
 
         <div className="overflow-x-auto">
+          {loading && (
+            <div className="text-center py-4">Loading more jobs...</div>
+          )}
           <table className="w-full">
             <thead className="bg-gray-50">
               <tr>
@@ -192,9 +232,9 @@ const JobApplication = () => {
             </tbody>
           </table>
 
-          {jobs.length === 0 && (
-            <div className="p-10 text-center text-gray-500">
-              No job applications found
+          {!hasMore && jobs.length > 0 && (
+            <div className="text-center py-4 text-gray-500">
+              No more jobs to load
             </div>
           )}
         </div>

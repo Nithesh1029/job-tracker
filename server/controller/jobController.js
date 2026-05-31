@@ -93,19 +93,38 @@ export const deleteJob=async(req ,res)=>{
     return res.status(500).json({message:error.message});
   }
 }
-
-export const getAllJob=async(req,res)=>{  
+export const getAllJob = async (
+  req,
+  res
+) => {
   try {
-    const userId = req.user.id
-    const jobs=await Job.find({createdBy:userId}).sort({createdAt: -1});
-    if(!jobs){
-      return res.status(200).json({message:"No jobs found"});
-    }
-    return res.status(200).json({count:jobs.length,jobs})
+    const userId = req.user.id;
+
+    const page =
+      parseInt(req.query.page) || 1;
+
+    const limit =
+      parseInt(req.query.limit) || 10;
+
+    const skip = (page - 1) * limit;
+
+    const jobs = await Job.find({
+      createdBy: userId,
+    })
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
+
+    return res.status(200).json({
+      count: jobs.length,
+      jobs,
+    });
   } catch (error) {
-    return res.status(500).json({message:error.message});
+    return res.status(500).json({
+      message: error.message,
+    });
   }
-}
+};
 
 
 export const getJobById=async(req ,res)=>{
