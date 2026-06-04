@@ -35,7 +35,7 @@ export const login =async(req ,res)=>{
         if(!email || !password){
             return res.status(400).json({message:"all fields required"});
         }
-        const userCheck=await User.findOne({email}).select(" _id password");
+        const userCheck=await User.findOne({email})
         if(!userCheck){
             return res.status(400).json({message:"user doesn't exists"});
         }
@@ -53,8 +53,14 @@ export const login =async(req ,res)=>{
             sameSite:'strict',
             maxAge:3600000
         });
+        const user = {
+            id:userCheck._id,
+            firstName:userCheck.firstName,
+            lastName:userCheck.lastName,
+            email:userCheck.email
+        }
 
-        res.status(200).json({message:"Logged in successfully"});
+        return res.status(200).json({message:"Logged in successfully", user});
 
     } catch (error) {
         return res.status(500).json({message:error.message}); 

@@ -14,10 +14,10 @@ const ProtectedRoutes = ({children}) => {
             try {
                 await axios.get(`${url}/auth/me`,{withCredentials:true});
                 setIsAuth(true);
-                setLoading(false);
+                
                 
             } catch (error) {
-                console.error(error);
+                
                 setIsAuth(false);
                 
             }finally{
@@ -31,7 +31,7 @@ const ProtectedRoutes = ({children}) => {
         return <div>Loading...</div>
     }
     if(!isAuth){
-        return navigate("/login");
+        return navigate("/");
     }
 
   return children;

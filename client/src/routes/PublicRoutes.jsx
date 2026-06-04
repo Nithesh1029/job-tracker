@@ -15,10 +15,10 @@ const PublicRoutes = ({children}) => {
                 await axios.get(`${url}/auth/me`,{withCredentials:true});
                 setIsAuth(true);
                 setLoading(false);
-                navigate("/applications")
+                navigate("/")
             } catch (error) {
                 setIsAuth(false);
-                navigate(to="/login");
+                navigate("/");
             }finally{
                 setLoading(false);
             }

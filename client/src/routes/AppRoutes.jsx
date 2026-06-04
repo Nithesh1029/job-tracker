@@ -7,10 +7,11 @@ import ResumeUpload from '../pages/ResumeUpload'
 import JobApplication from '../pages/JobApplication'
 import PublicRoutes from './PublicRoutes'
 import ProtectedRoutes from './ProtectedRoutes'
+import Home from '../Home'
 const AppRoutes = () => {
   return (
     <Routes>
-        
+        <Route path="/" element={<PublicRoutes><Home /></PublicRoutes>} />
         <Route path="/register" element={<PublicRoutes> <Register /></PublicRoutes>} />
         <Route path="/login" element={ <PublicRoutes><Login /></PublicRoutes> } />
         <Route path="/create-job" element={ <ProtectedRoutes><JobForm /></ProtectedRoutes> } />

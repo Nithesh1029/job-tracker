@@ -93,10 +93,7 @@ export const deleteJob=async(req ,res)=>{
     return res.status(500).json({message:error.message});
   }
 }
-export const getAllJob = async (
-  req,
-  res
-) => {
+export const getAllJob = async (req,res) => {
   try {
     const userId = req.user.id;
 
@@ -114,9 +111,11 @@ export const getAllJob = async (
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit);
+    
+    const totalJobs=await Job.countDocuments({createdBy:userId});
 
     return res.status(200).json({
-      count: jobs.length,
+      totalJobs,
       jobs,
     });
   } catch (error) {
