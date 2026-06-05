@@ -9,6 +9,7 @@ router.put('/update/:jobId',getUser,updateJob);
 router.delete('/delete/:jobId',getUser,deleteJob);
 router.get('/get-resume',getUser,getResume)
 router.get('/getall',getUser,getAllJob);
+
 router.put('/upload-resume',getUser,uploadResume);
 router.get('/:jobId',getUser,getJobById);
 export default router   

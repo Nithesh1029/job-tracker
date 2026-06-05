@@ -149,6 +149,10 @@ export const getJobById=async(req ,res)=>{
 export const uploadResume=async(req ,res)=>{
   try {
     const userId= req.user.id;
+    const user=await User.findById(userId);
+    if(user.resume!=""){
+      return res.status(400).json({message:"Resume already exists, delete the existing one to upload a new resume"});
+    }
     const {resume}=req.body;
     const updatedUser=await User.findByIdAndUpdate(userId,{resume},{new:true});
     return res.status(200).json({message:"Resume Updated",user:updatedUser})
@@ -168,6 +172,7 @@ export const getResume = async (req, res) => {
         message: "User not found",
       });
     }
+    console.log("the resume url is ",user.resume);
 
     return res.status(200).json({
       resume: user.resume,
@@ -178,3 +183,4 @@ export const getResume = async (req, res) => {
     });
   }
 };
+

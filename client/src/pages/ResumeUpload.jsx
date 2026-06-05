@@ -19,6 +19,9 @@ const ResumeUpload = () => {
 
     try {
       const data = new FormData();
+      console.log("Selected file:", resume);
+      console.log("File type:", resume.type);
+      console.log("File size:", resume.size);
 
       data.append("file", resume);
 
@@ -27,17 +30,17 @@ const ResumeUpload = () => {
         "mern_resume_upload"
       );
 
-      data.append("resource_type", "raw");
+      
 
       const cloudinaryRes = await axios.post(
-        `https://api.cloudinary.com/v1_1/${cloudName}/raw/upload`,
+        `https://api.cloudinary.com/v1_1/${cloudName}/auto/upload`,
         data
       );
 
       const resumeUrl =
         cloudinaryRes.data.secure_url;
 
-      // Send URL to backend
+      
       await axios.put(
         `${URL}/job/upload-resume`,
         {
@@ -51,7 +54,7 @@ const ResumeUpload = () => {
       alert("Resume uploaded successfully");
     } catch (error) {
       console.error(error);
-      alert("Upload failed");
+      alert("Upload failed", error.message);
     }
   };
 
@@ -103,7 +106,7 @@ const ResumeUpload = () => {
                 </p>
 
                 <p className="text-xs text-gray-500 mt-2">
-                  PDF, DOC, DOCX
+                  PDF
                 </p>
               </div>
             </div>
@@ -115,7 +118,7 @@ const ResumeUpload = () => {
               setResume(e.target.files[0])
             }
             type="file"
-            accept=".pdf,.doc,.docx"
+            accept="application/pdf"
             className="hidden"
           />
 

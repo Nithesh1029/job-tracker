@@ -5,13 +5,35 @@ import { useNavigate } from "react-router-dom";
 import NavBar from "./components/NavBar";
 
 import { useAuth } from "./context/AppContext";
+import axios from "axios";
 
 const Home = () => {
   const navigate =
     useNavigate();
 
-  const { user, loading } =
-    useAuth();
+  const { user, loading } = useAuth();
+  const url=import.meta.env.VITE_API_URL;
+
+  const getResume=async()=>{
+    try {
+      const res=await axios.get(`${url}/job/get-resume`,{withCredentials:true});
+const link =
+  document.createElement("a");
+
+link.href = res.data.resume;
+
+link.download = "resume.pdf";
+
+document.body.appendChild(link);
+
+link.click();
+
+document.body.removeChild(link);
+      
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   if (loading) {
     return (
@@ -72,6 +94,12 @@ const Home = () => {
                 className="bg-black text-white px-6 py-3 rounded-md hover:bg-gray-800 transition"
               >
                 Go to Dashboard
+              </button>
+              <button
+                onClick={getResume}
+                className="bg-black text-white px-6 py-3 ml-2  rounded-md hover:bg-gray-800 transition"
+              >
+                Download Resume
               </button>
             </div>
           )}
