@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import NavBar from "./NavBar";
 
 const JobForm = () => {
   const url = import.meta.env.VITE_API_URL;
@@ -33,15 +35,18 @@ const JobForm = () => {
         }
       );
 
-      alert("Application created successfully");
+      toast.success("Application created successfully");
       navigate("/applications");
     } catch (error) {
-      console.error(error);
+      
+      toast.error("Failed to create application");
     }
   };
 
   return (
-    <div className="min-h-screen bg-[#f5f5f5] flex items-center justify-center px-4 py-10 font-[Inter]">
+    <div>
+      <NavBar/>
+    <div className="min-h-screen bg-[#f5f5f5] flex items-center justify-center px-4 py-2 font-[Inter]">
       <div className="w-full max-w-2xl">
         <form
           onSubmit={handleSubmit}
@@ -188,6 +193,7 @@ const JobForm = () => {
           </button>
         </form>
       </div>
+    </div>
     </div>
   );
 };

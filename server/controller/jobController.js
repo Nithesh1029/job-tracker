@@ -41,10 +41,10 @@ export const updateJob=async(req,res)=>{
     const user=await User.findById(userId)
 
     const {jobId} = req.params;
-    console.log("the user id",userId)
+   
 
     const job=await Job.findById(jobId);
-    console.log("the user id in job table",job.createdBy)
+    
     if(!job){
       return res.status(500).json({message:"Job Application not found"});
     }
@@ -172,7 +172,10 @@ export const getResume = async (req, res) => {
         message: "User not found",
       });
     }
-    console.log("the resume url is ",user.resume);
+
+    if(!user.resume){
+      return res.status(404).json({message: "No resume found",});
+    }
 
     return res.status(200).json({
       resume: user.resume,
@@ -184,3 +187,20 @@ export const getResume = async (req, res) => {
   }
 };
 
+export const deleteResume=async(req,res)=>{
+  try {
+    const userId=req.user.id;
+    const user=await User.findById(userId);
+    if(!user.resume){
+      return res.status(400).json({message:"No resume found to delete"});
+    }
+     user.resume="";
+     user.save();
+    return res.status(200).json({message:"Resume deleted successfully"});
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+}
+ 

@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import axios from "axios";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const ResumeUpload = () => {
   const URL = import.meta.env.VITE_API_URL;
 
   const cloudName =
     import.meta.env.VITE_CLOUDNAME;
+    const navigate=useNavigate();
 
   const [resume, setResume] = useState(null);
 
@@ -13,15 +16,25 @@ const ResumeUpload = () => {
     e.preventDefault();
 
     if (!resume) {
-      alert("Please select a file");
+      toast.error("Please select a file");
+      return;
+    }
+    const maxSize=1*1024*1024;
+    if(resume.size>maxSize){
+      toast.error("File size should be less than 1MB");
+      
       return;
     }
 
+    if(resume.type!="application/pdf"){
+      toast.error("Only PDF files are allowed");
+      return;
+    }
+
+
     try {
       const data = new FormData();
-      console.log("Selected file:", resume);
-      console.log("File type:", resume.type);
-      console.log("File size:", resume.size);
+
 
       data.append("file", resume);
 
@@ -51,10 +64,14 @@ const ResumeUpload = () => {
         }
       );
 
-      alert("Resume uploaded successfully");
+      toast.success("Resume uploaded successfully");
+      setResume(null);
+      setTimeout(() => {
+        navigate("/");
+      },1000);
     } catch (error) {
-      console.error(error);
-      alert("Upload failed", error.message);
+      
+      toast.error(error.response?.data?.message || "Failed to upload resume");
     }
   };
 

@@ -6,32 +6,37 @@ import NavBar from "./components/NavBar";
 
 import { useAuth } from "./context/AppContext";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const Home = () => {
-  const navigate =
-    useNavigate();
+  const navigate = useNavigate();
 
   const { user, loading } = useAuth();
-  const url=import.meta.env.VITE_API_URL;
+  const url = import.meta.env.VITE_API_URL;
 
-  const getResume=async()=>{
+  const getResume = async () => {
     try {
-      const res=await axios.get(`${url}/job/get-resume`,{withCredentials:true});
-const link =
-  document.createElement("a");
+      const res = await axios.get(`${url}/job/get-resume`, {
+        withCredentials: true,
+      });
 
-link.href = res.data.resume;
 
-link.download = "resume.pdf";
 
-document.body.appendChild(link);
-
-link.click();
-
-document.body.removeChild(link);
-      
+      window.open(res.data.resume, "_blank");
     } catch (error) {
-      console.error(error);
+      toast.error(error.response?.data?.message || "Failed to fetch resume");
+    }
+  };
+
+  const deleteResume=async()=>{
+    try {
+      
+      const res=await axios.patch(`${url}/job/delete-resume`,{},{
+        withCredentials:true,
+      });
+      toast.success(res.data.message );
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to delete resume"  );
     }
   }
 
@@ -50,34 +55,25 @@ document.body.removeChild(link);
       <section className="max-w-6xl mx-auto px-6 py-13">
         <div className="max-w-3xl">
           <h1 className="text-6xl font-bold leading-tight tracking-tight">
-            Track your job
-            applications
-            effortlessly.
+            Track your job applications effortlessly.
           </h1>
 
           <p className="mt-6 text-lg text-gray-600 leading-relaxed">
-            A minimal job tracking platform
-            to organize applications,
-            resumes, interview stages,
-            and opportunities in one
-            place.
+            A minimal job tracking platform to organize applications, resumes,
+            interview stages, and opportunities in one place.
           </p>
 
           {!user ? (
             <div className="mt-10 flex gap-4">
               <button
-                onClick={() =>
-                  navigate("/register")
-                }
+                onClick={() => navigate("/register")}
                 className="bg-black text-white px-6 py-3 rounded-md hover:bg-gray-800 transition"
               >
                 Get Started
               </button>
 
               <button
-                onClick={() =>
-                  navigate("/login")
-                }
+                onClick={() => navigate("/login")}
                 className="border border-black px-6 py-3 rounded-md hover:bg-black hover:text-white transition"
               >
                 Login
@@ -86,11 +82,7 @@ document.body.removeChild(link);
           ) : (
             <div className="mt-10">
               <button
-                onClick={() =>
-                  navigate(
-                    "/applications"
-                  )
-                }
+                onClick={() => navigate("/applications")}
                 className="bg-black text-white px-6 py-3 rounded-md hover:bg-gray-800 transition"
               >
                 Go to Dashboard
@@ -101,45 +93,55 @@ document.body.removeChild(link);
               >
                 Download Resume
               </button>
+              <button
+                onClick={deleteResume}
+                className="bg-black text-white px-6 py-3 ml-2  rounded-md hover:bg-gray-800 transition"
+              >
+                Delete Resume
+              </button>
             </div>
           )}
         </div>
 
         <div className="grid md:grid-cols-3 gap-6 mt-24">
-          <div className="border border-gray-200 p-6 rounded-xl cursor-pointer" onClick={user? () => navigate("/applications") : () => navigate("/login") }>  
-            <h2 className="text-xl font-semibold">
-              Track Applications
-            </h2>
+          <div
+            className="border border-gray-200 p-6 rounded-xl cursor-pointer"
+            onClick={
+              user ? () => navigate("/applications") : () => navigate("/login")
+            }
+          >
+            <h2 className="text-xl font-semibold">Track Applications</h2>
 
             <p className="mt-3 text-gray-600">
-              Keep all your job
-              applications organized in
-              one place.
+              Keep all your job applications organized in one place.
             </p>
           </div>
 
-          <div onClick={()=>{
-            {user? navigate("/upload-resume") : navigate("/login")}
-          }}  className="border border-gray-200 p-6 cursor-pointer rounded-xl">
-            <h2 className="text-xl font-semibold">
-              Upload Resume
-            </h2>
+          <div
+            onClick={() => {
+              {
+                user ? navigate("/upload-resume") : navigate("/login");
+              }
+            }}
+            className="border border-gray-200 p-6 cursor-pointer rounded-xl"
+          >
+            <h2 className="text-xl font-semibold">Upload Resume</h2>
 
             <p className="mt-3 text-gray-600">
-              Store and manage your
-              latest resume securely.
+              Store and manage your latest resume securely.
             </p>
           </div>
 
-          <div className="border border-gray-200 p-6 rounded-xl cursor-pointer" onClick={user? () => navigate("/applications") : () => navigate("/login") } >
-            <h2 className="text-xl font-semibold">
-              Update Status
-            </h2>
+          <div
+            className="border border-gray-200 p-6 rounded-xl cursor-pointer"
+            onClick={
+              user ? () => navigate("/applications") : () => navigate("/login")
+            }
+          >
+            <h2 className="text-xl font-semibold">Update Status</h2>
 
             <p className="mt-3 text-gray-600">
-              Track interview progress,
-              offers, and rejections
-              easily.
+              Track interview progress, offers, and rejections easily.
             </p>
           </div>
         </div>

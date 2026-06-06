@@ -4,6 +4,8 @@ import React, {
   useState,
   useRef,
 } from "react";
+import NavBar from "../components/NavBar";
+import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 const JobApplication = () => {
@@ -35,12 +37,13 @@ const JobApplication = () => {
         prev.filter((job) => job._id !== id)
       );
 
-      alert(
+      toast.success(
         "Application deleted successfully"
       );
       navigate("/applications");
     } catch (error) {
-      console.error(error);
+      toast.error("Failed to delete application");
+      
     }
   };
 
@@ -158,7 +161,9 @@ const JobApplication = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#f7f7f7] px-4 py-8 sm:px-6 lg:px-8 font-[Inter]">
+    <div>
+      <NavBar/>
+    <div className="min-h-screen bg-[#f7f7f7] px-4 py-4 sm:px-6 lg:px-8 font-[Inter]">
       <div className="max-w-7xl mx-auto">
         <div className="bg-white border border-gray-200 rounded-3xl overflow-hidden">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 px-6 py-7 border-b border-gray-200">
@@ -320,7 +325,7 @@ const JobApplication = () => {
                             job._id
                           )
                         }
-                        className="rounded-xl border border-black bg-black px-4 py-2 text-sm font-medium text-white transition-all duration-300 hover:bg-white hover:text-black"
+                        className="rounded-xl cursor-pointer border border-black bg-black px-4 py-2 text-sm font-medium text-white transition-all duration-300 hover:bg-white hover:text-black"
                       >
                         Delete
                       </button>
@@ -386,6 +391,7 @@ const JobApplication = () => {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 };

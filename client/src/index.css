@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 @import url('https://fonts.googleapis.com/css2?family=Playwrite+GB+J:ital,wght@0,100..400;1,100..400&display=swap');
+
 body {
-  font-family: 'Playwrite', sans-serif;
+  font-family: "Playwrite GB J", cursive;
 }

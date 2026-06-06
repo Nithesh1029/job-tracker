@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AppContext";
+import toast from "react-hot-toast";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -44,11 +45,11 @@ const Login = () => {
         }
       );
 
-      console.log(res.data);
+      
 
       setUser(res.data.user);
 
-      alert("Login successful");
+      toast.success("Login successful");
 
       navigate("/");
     } catch (error) {
