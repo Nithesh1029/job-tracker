@@ -25,7 +25,7 @@ app.use(cookieParser())
 
 app.use('/api/job',jobRouter)
 app.use('/api/auth',authRouter);
-const port = process.env.PORT || 4000
+const port = process.env.PORT || 5000
 
 app.listen(port,()=>{
     console.log(`Connected on ${port}`)
