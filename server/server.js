@@ -12,7 +12,7 @@ dotenv.config()
 connectDb();
 const app = express()
 app.use(cors({
-    origin:"http://localhost:5173",
+    origin:"https://job-tracker-flame-iota.vercel.app",
     credentials:true
 }))
 app.use(express.json())
