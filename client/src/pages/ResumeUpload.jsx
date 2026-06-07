@@ -76,12 +76,17 @@ const ResumeUpload = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#f5f5f5] flex items-center justify-center px-4 py-10 font-[Inter]">
-      <div className="w-full max-w-md">
-        <form
-          onSubmit={handleSubmit}
-          className="bg-white border border-gray-200 rounded-2xl p-8 sm:p-10 flex flex-col gap-6 transition-all duration-300"
-        >
+<div className="relative min-h-screen flex items-center justify-center px-4 py-10 font-[Inter] overflow-hidden">
+  <div
+    className="absolute inset-0 bg-cover bg-center opacity-10 pointer-events-none"
+    style={{ backgroundImage: "url('/m.webp')" }}
+  />
+
+  <div className="relative z-10 w-full max-w-md">
+    <form
+      onSubmit={handleSubmit}
+      className="bg-white/90 backdrop-blur-sm border border-gray-200 rounded-2xl p-8 sm:p-10 flex flex-col gap-6 transition-all duration-300"
+    >
           <div className="text-center">
             <h1 className="text-3xl font-semibold tracking-tight text-black">
               Upload Resume
@@ -141,10 +146,19 @@ const ResumeUpload = () => {
 
           <button
             type="submit"
-            className="w-full rounded-xl border border-black bg-black py-3 text-sm font-medium text-white transition-all duration-300 hover:bg-white hover:text-black"
+            className="w-full rounded-xl border cursor-pointer border-black bg-black py-3 text-sm font-medium text-white transition-all duration-300 hover:bg-white hover:text-black"
           >
             Submit Resume
           </button>
+          <p className="text-sm text-gray-500 text-center">
+            <button
+              type="button"
+              onClick={() => navigate("/")}
+              className="text-gray-500 cursor-pointer hover:text-black"
+            >
+              Return to Dashboard
+            </button>
+          </p>
         </form>
       </div>
     </div>

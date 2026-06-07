@@ -159,38 +159,45 @@ const JobApplication = () => {
         return "bg-white text-black border-gray-300";
     }
   };
+return (
+  
+  <div className="relative min-h-screen font-[Inter] overflow-hidden">
+    <div
+      className="absolute inset-0 bg-cover bg-center opacity-5 pointer-events-none"
+      style={{ backgroundImage: "url('/m.webp')" }}
+    />
 
-  return (
-    <div>
-      <NavBar/>
-    <div className="min-h-screen bg-[#f7f7f7] px-4 py-4 sm:px-6 lg:px-8 font-[Inter]">
-      <div className="max-w-7xl mx-auto">
-        <div className="bg-white border border-gray-200 rounded-3xl overflow-hidden">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 px-6 py-7 border-b border-gray-200">
-            <div>
-              <h1 className="text-3xl font-semibold tracking-tight text-black">
-                Job Applications
-              </h1>
+    <div className="relative z-10">
+      <NavBar />
 
-              <p className="text-sm text-gray-500 mt-2">
-                Manage and track your
-                application progress
-              </p>
+      <div className="px-4 py-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="bg-white/90 backdrop-blur-sm border border-gray-200 rounded-3xl overflow-hidden">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 px-5 sm:px-6 py-6 sm:py-7 border-b border-gray-200">
+              <div>
+                <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-black">
+                  Job Applications
+                </h1>
+
+                <p className="text-sm text-gray-500 mt-2">
+                  Manage and track your application progress
+                </p>
+              </div>
+
+              <div className="border border-gray-200 rounded-2xl px-5 py-3 bg-[#fafafa] w-full sm:w-auto">
+                <p className="text-xs uppercase tracking-wide text-gray-400">
+                  Total Applications
+                </p>
+
+                <h2 className="text-2xl font-semibold text-black mt-1">
+                  {totalJobs}
+                </h2>
+              </div>
             </div>
 
-            <div className="border border-gray-200 rounded-2xl px-5 py-3 bg-[#fafafa]">
-              <p className="text-xs uppercase tracking-wide text-gray-400">
-                Total Applications
-              </p>
-
-              <h2 className="text-2xl font-semibold text-black mt-1">
-                {totalJobs}
-              </h2>
-            </div>
-          </div>
 
           <div className="overflow-x-auto">
-            <table className="w-full min-w-237.5">
+            <table className="w-full min-w-[950px]">
               <thead className="bg-[#fafafa] border-b border-gray-200">
                 <tr>
                   <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">
@@ -234,14 +241,12 @@ const JobApplication = () => {
                     </td>
 
                     <td className="px-6 py-5">
-                      <div>
-                        <p className="text-sm font-semibold text-black">
-                          {job.company}
-                        </p>
-                      </div>
+                      <p className="text-sm font-semibold text-black whitespace-nowrap">
+                        {job.company}
+                      </p>
                     </td>
 
-                    <td className="px-6 py-5 text-sm text-gray-700">
+                    <td className="px-6 py-5 text-sm text-gray-700 whitespace-nowrap">
                       {job.role}
                     </td>
 
@@ -249,13 +254,10 @@ const JobApplication = () => {
                       <select
                         value={job.status}
                         onChange={(e) =>
-                          updateJob(
-                            job._id,
-                            {
-                              status:
-                                e.target.value,
-                            }
-                          )
+                          updateJob(job._id, {
+                            status:
+                              e.target.value,
+                          })
                         }
                         className={`rounded-xl border px-4 py-2 text-sm font-medium outline-none transition-all duration-200 focus:border-black cursor-pointer ${getStatusStyle(
                           job.status
@@ -325,7 +327,7 @@ const JobApplication = () => {
                             job._id
                           )
                         }
-                        className="rounded-xl cursor-pointer border border-black bg-black px-4 py-2 text-sm font-medium text-white transition-all duration-300 hover:bg-white hover:text-black"
+                        className="rounded-xl cursor-pointer border border-black bg-black px-4 py-2 text-sm font-medium text-white transition-all duration-300 hover:bg-white hover:text-black whitespace-nowrap"
                       >
                         Delete
                       </button>
@@ -356,7 +358,7 @@ const JobApplication = () => {
 
             {!loading &&
               jobs.length === 0 && (
-                <div className="flex flex-col items-center justify-center py-24 px-6 text-center">
+                <div className="flex flex-col items-center justify-center py-20 sm:py-24 px-6 text-center">
                   <div className="w-16 h-16 rounded-2xl border border-gray-200 flex items-center justify-center mb-5">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -377,8 +379,7 @@ const JobApplication = () => {
                   </div>
 
                   <h2 className="text-xl font-semibold text-black">
-                    No applications
-                    yet
+                    No applications yet
                   </h2>
 
                   <p className="text-sm text-gray-500 mt-2 max-w-sm">
@@ -393,7 +394,8 @@ const JobApplication = () => {
       </div>
     </div>
     </div>
-  );
+  </div>
+);
 };
 
 export default JobApplication;

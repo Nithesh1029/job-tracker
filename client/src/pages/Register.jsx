@@ -27,6 +27,10 @@ const Register = () => {
     symb: false,
   });
 
+  const validateNames = (name) => {
+    const nameRegex =  /^[A-Za-z\s]+$/;
+    return nameRegex.test(name);
+  }
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -41,6 +45,7 @@ const Register = () => {
       num: /[0-9]/.test(password),
       symb: /[@$!%*?&]/.test(password),
     };
+
 
     setPassCheck(checks);
 
@@ -98,24 +103,29 @@ const Register = () => {
         }
       );
 
-      console.log(res.data);
+      
 
       toast.success("Registration successful");
 
       navigate("/login");
     } catch (error) {
-      console.error(error.response?.data || error.message);
-      toast.error("Registration failed");
+      
+      toast.error(error.response?.data?.message || "Registration failed");
     }
   };
 
   return (
-    <div className="min-h-screen bg-[#f5f5f5] flex items-center justify-center px-4 py-10 font-[Inter]">
-      <div className="w-full max-w-md">
-        <form
-          onSubmit={handleSubmit}
-          className="bg-white border border-gray-200 rounded-2xl p-8 sm:p-10 transition-all duration-300"
-        >
+<div className="relative min-h-screen flex items-center justify-center px-4 py-10 font-[Inter] overflow-hidden">
+  <div
+    className="absolute inset-0 bg-cover bg-center opacity-10 pointer-events-none"
+    style={{ backgroundImage: "url('/m.webp')" }}
+  />
+
+  <div className="relative z-10 w-full max-w-md">
+    <form
+      onSubmit={handleSubmit}
+      className="bg-white/90 backdrop-blur-sm border border-gray-200 rounded-2xl p-8 sm:p-10 transition-all duration-300"
+    >
           <div className="mb-8 text-center">
             <h1 className="text-3xl font-semibold text-black tracking-tight">
               Create account
@@ -134,10 +144,16 @@ const Register = () => {
                 </label>
 
                 <input
+                autoFocus
                   type="text"
                   name="firstName"
                   value={formData.firstName}
-                  onChange={handleChange}
+                  onChange={(e)=>{
+                    const value=e.target.value;
+                    if(value === "" || validateNames(value)){
+                      handleChange(e);
+                    }
+                  }}
                   placeholder="First name"
                   className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-black placeholder:text-gray-400 outline-none transition-all duration-200 focus:border-black"
                 />
@@ -152,7 +168,9 @@ const Register = () => {
                   type="text"
                   name="lastName"
                   value={formData.lastName}
-                  onChange={handleChange}
+                  onChange={(e)=>{
+                    validateNames(e.target.value) && handleChange(e);
+                  }}
                   placeholder="Last name"
                   className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-black placeholder:text-gray-400 outline-none transition-all duration-200 focus:border-black"
                 />
@@ -279,7 +297,7 @@ const Register = () => {
 
           <button
             type="submit"
-            className="mt-7 w-full rounded-xl border border-black bg-black py-3 text-sm font-medium text-white transition-all duration-300 hover:bg-white hover:text-black"
+            className="mt-7 w-full cursor-pointer rounded-xl border border-black bg-black py-3 text-sm font-medium text-white transition-all duration-300 hover:bg-white hover:text-black"
           >
             Register
           </button>

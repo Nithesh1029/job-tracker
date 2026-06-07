@@ -15,7 +15,7 @@ const JobForm = () => {
     notes: "",
   });
   const navigate = useNavigate();
-
+  const [loading,setLoading]=useState(false);
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -27,6 +27,7 @@ const JobForm = () => {
     e.preventDefault();
 
     try {
+      setLoading(true);
       await axios.post(
         `${url}/job/create-job`,
         formData,
@@ -39,21 +40,30 @@ const JobForm = () => {
       navigate("/applications");
     } catch (error) {
       
-      toast.error("Failed to create application");
+      toast.error(error.response?.data?.message || "Failed to create application");
+    }finally{
+      setLoading(false);
     }
   };
 
-  return (
-    <div>
-      <NavBar/>
-    <div className="min-h-screen bg-[#f5f5f5] flex items-center justify-center px-4 py-2 font-[Inter]">
+return (
+<div className="relative min-h-screen  overflow-hidden">
+  <div
+    className="absolute inset-0 bg-cover bg-center opacity-10 pointer-events-none"
+    style={{ backgroundImage: "url('/m.webp')" }}
+  />
+
+  <div className="relative z-10">
+    <NavBar />
+
+    <div className="flex items-center justify-center px-4 py-6 sm:py-4">
       <div className="w-full max-w-2xl">
         <form
           onSubmit={handleSubmit}
-          className="bg-white border border-gray-200 rounded-3xl p-8 sm:p-10"
+          className="bg-white/90 backdrop-blur-sm border border-gray-200 rounded-2xl sm:rounded-3xl p-5 sm:p-8 lg:p-10"
         >
-          <div className="mb-8">
-            <h1 className="text-3xl font-semibold tracking-tight text-black">
+          <div className="mb-8">  
+            <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-black">
               New Application
             </h1>
 
@@ -72,11 +82,13 @@ const JobForm = () => {
               </label>
 
               <input
+              autoFocus
                 onChange={handleChange}
                 type="text"
                 value={formData.company}
                 id="company"
                 name="company"
+                required
                 placeholder="Enter company name"
                 className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-black placeholder:text-gray-400 outline-none transition-all duration-200 focus:border-black"
               />
@@ -91,6 +103,7 @@ const JobForm = () => {
               </label>
 
               <input
+              required  
                 onChange={handleChange}
                 value={formData.role}
                 type="text"
@@ -187,15 +200,17 @@ const JobForm = () => {
 
           <button
             type="submit"
+            disabled={loading}
             className="mt-8 w-full rounded-xl border border-black bg-black py-3 text-sm font-medium text-white transition-all duration-300 hover:bg-white hover:text-black"
           >
-            Submit Application
+            {loading ?"Submitting...":"Submit Application"}
           </button>
         </form>
       </div>
     </div>
-    </div>
-  );
+   </div> 
+  </div>
+);
 };
 
 export default JobForm;
